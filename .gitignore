@@ -1,37 +1,6 @@
-git clone https://github.com/tu_usuario/tu_proyecto.git
-cd tu_proyecto
-
-sudo apt update
-sudo apt install scala sbt
-
-name := "ClinicManagement"
-
-version := "0.1"
-
-scalaVersion := "2.13.8"
-
-libraryDependencies += "org.scalatra" %% "scalatra" % "2.7.0"
-
-libraryDependencies += "org.postgresql" % "postgresql" % "42.2.20"
-libraryDependencies += "com.zaxxer" % "HikariCP" % "3.4.5"
-
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-
-val config = new HikariConfig()
-config.setJdbcUrl("jdbc:postgresql://your-db-url:5432/your-database")
-config.setUsername("your-username")
-config.setPassword("your-password")
-
-val dataSource = new HikariDataSource(config)
-
-class PatientController extends ScalatraServlet {
-  get("/patients/:id") {
-    val id = params("id").toInt
-    // Lógica para obtener la información del paciente
-  }
-
-  post("/patients") {
-    // Lógica para crear un nuevo paciente
-  }
-}
+target/
+.idea/
+.vscode/
+*.class
+*.log
+*.tmp
