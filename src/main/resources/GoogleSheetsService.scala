@@ -1,53 +1,56 @@
 package services
 
-import com.google.api.services.sheets.v4.{Sheets, SheetsScopes}
-import com.google.api.services.sheets.v4.model.{ValueRange}
-import com.google.auth.oauth2.GoogleCredentials
-import com.google.auth.http.HttpCredentialsAdapter
-import com.google.api.client.http.javanet.NetHttpTransport
-import com.google.api.client.json.gson.GsonFactory
-import java.io.FileInputStream
-import scala.jdk.CollectionConverters._
+import sttp.client3._
+import sttp.model.Uri
+import io.circe.parser._
+import io.circe.syntax._
+import io.circe.generic.auto._
 
 object GoogleSheetsService {
-  private val APPLICATION_NAME = "Proyecto"
-  private val JSON_FACTORY = GsonFactory.getDefaultInstance
-  private val SCOPES = List(SheetsScopes.SPREADSHEETS).asJava
-  private val CREDENTIALS_FILE_PATH = "path/to/your/credentials.json" // Actualiza esta ruta con la ruta real de tu archivo credentials.json
-  private val spreadsheetId = "1dzU4CQBC2BMpXPzuiyPdjMveRmkQwlG8mM8eaZCghpQ"  // ID de tu hoja de cálculo
-  private val sheetsService = getSheetsService
+  private val apiUrl = uri"https://script.google.com/macros/s/AKfycbwcS6pt8tkxYkTJE8DStTZHi67Uh5BuB0Zu_id2bbKVHvNzuhfCnFxBuEHLyBGaR4Otcw/exec" // URL de tu API web
 
-  private def getSheetsService: Sheets = {
-    val credentialsStream = new FileInputStream(CREDENTIALS_FILE_PATH)
-    val credentials = GoogleCredentials.fromStream(credentialsStream).createScoped(SCOPES)
-    new Sheets.Builder(new NetHttpTransport, JSON_FACTORY, new HttpCredentialsAdapter(credentials))
-      .setApplicationName(APPLICATION_NAME)
-      .build()
-  }
+  case class Patient(id: String, fullName: String, idNumber: String, birthDate: String, gender: String, address: String, phone: String, email: String, registrationDate: String)
 
-  def readData(sheetName: String, range: String): List[List[String]] = {
-    val response = sheetsService.spreadsheets().values().get(spreadsheetId, s"$sheetName!$range").execute()
-    val values = response.getValues
-    if (values == null || values.isEmpty) {
-      List.empty
-    } else {
-      values.asScala.map(_.asScala.toList.map(_.toString)).toList
-    }
+  def getPatients(): List[List[String]] = {
+    val backend = HttpURLConnectionBackend()
+    val response = basicRequest.get(apiUrl).send(backend)
+    val body = response.body.getOrElse("[]")
+    decode[List[List[String]]](body).getOrElse(List.empty)
   }
 
   def writeData(sheetName: String, range: String, values: List[List[String]]): Unit = {
+    val backend = HttpURLConnectionBackend()
     val body = new ValueRange().setValues(values.map(_.asJava).asJava)
-    sheetsService.spreadsheets().values()
-      .update(spreadsheetId, s"$sheetName!$range", body)
-      .setValueInputOption("RAW")
-      .execute()
+    val response = basicRequest
+      .post(apiUrl)
+      .body(body.asJson.noSpaces)
+      .send(backend)
+    
+    if (response.isFailure) {
+      println(s"Error escribiendo datos: ${response.statusCode} - ${response.body}")
+    }
   }
 
   def appendData(sheetName: String, values: List[String]): Unit = {
-    val body = new ValueRange().setValues(List(values.asJava).asJava)
-    sheetsService.spreadsheets().values()
-      .append(spreadsheetId, s"$sheetName!A1", body)
-      .setValueInputOption("RAW")
-      .execute()
+    val backend = HttpURLConnectionBackend()
+    val response = basicRequest
+      .post(apiUrl)
+      .body(values.asJson.noSpaces)
+      .send(backend)
+
+    if (response.isFailure) {
+      println(s"Error añadiendo datos: ${response.statusCode} - ${response.body}")
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    // Leer datos
+    val patients = getPatients()
+    println(s"Pacientes: $patients")
+
+    // Añadir un nuevo paciente
+    val newPatient = Patient("3", "Carlos Gómez", "12345679", "03/03/1990", "M", "Calle Ejemplo 123", "555-5557", "carlos.gomez@example.com", "03/03/2020")
+    appendData("Pacientes", List(newPatient.id, newPatient.fullName, newPatient.idNumber, newPatient.birthDate, newPatient.gender, newPatient.address, newPatient.phone, newPatient.email, newPatient.registrationDate))
   }
 }
+
