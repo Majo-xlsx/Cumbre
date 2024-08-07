@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Pacientes</title>
+</head>
+<body>
+    <h1>Agregar Paciente</h1>
+    <form id="patientForm">
+        <label for="id">ID:</label><br>
+        <input type="text" id="id" name="id" required><br>
+        <label for="fullName">Nombre Completo:</label><br>
+        <input type="text" id="fullName" name="fullName" required><br>
+        <label for="idNumber">Número de Identificación:</label><br>
+        <input type="text" id="idNumber" name="idNumber" required><br>
+        <label for="birthDate">Fecha de Nacimiento:</label><br>
+        <input type="text" id="birthDate" name="birthDate" required><br>
+        <label for="gender">Género:</label><br>
+        <input type="text" id="gender" name="gender" required><br>
+        <label for="address">Dirección:</label><br>
+        <input type="text" id="address" name="address" required><br>
+        <label for="phone">Teléfono:</label><br>
+        <input type="text" id="phone" name="phone" required><br>
+        <label for="email">Correo Electrónico:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="registrationDate">Fecha de Registro:</label><br>
+        <input type="text" id="registrationDate" name="registrationDate" required><br>
+        <input type="submit" value="Agregar Paciente">
+    </form>
+
+    <script>
+        document.getElementById('patientForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/addPatient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert('Paciente agregado exitosamente');
+                this.reset();
+            } else {
+                alert('Error al agregar paciente');
+            }
+        };
+    </script>
+</body>
+</html>
