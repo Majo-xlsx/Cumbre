@@ -19,3 +19,4 @@ libraryDependencies ++= Seq(
   "javax.servlet" % "javax.servlet-api" % "4.0.1"
 )
 
+mainClass in Compile := Some("web.ScalatraBootstrap")
