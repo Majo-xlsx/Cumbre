@@ -10,8 +10,9 @@ This project is a web-based platform for managing and administering clinical inf
 
 ## Getting Started
 1. Clone the repository.
-2. Install dependencies using SBT.
-3. Configure the database connection in `application.conf`.
+2. Install Dockerfile.
+3. Install dependencies using SBT.
+4. Configure the database connection in `application.conf`.
 
 ## Running the Project
 ```bash
