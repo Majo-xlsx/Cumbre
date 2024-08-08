@@ -5,7 +5,7 @@ version := "0.1"
 scalaVersion := "2.13.8"
 
 libraryDependencies ++= Seq(
-  "org.scalatra" %% "scalatra" % "2.8.0",
+  "org.scalatra" %% "scalatra" % "2.7.0",
   "org.postgresql" % "postgresql" % "42.2.20",
   "com.zaxxer" % "HikariCP" % "3.4.5",
   "org.scalatest" %% "scalatest" % "3.2.10" % Test,
@@ -16,7 +16,5 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-core" % "0.14.1",
   "io.circe" %% "circe-generic" % "0.14.1",
   "io.circe" %% "circe-parser" % "0.14.1",
-  "javax.servlet" % "javax.servlet-api" % "4.0.1",
-  "org.eclipse.jetty" % "jetty-webapp" % "9.4.44.v20210927" % "provided",
-  "org.eclipse.jetty" % "jetty-server" % "9.4.44.v20210927" % "provided"
+  "javax.servlet" % "javax.servlet-api" % "4.0.1"
 )
