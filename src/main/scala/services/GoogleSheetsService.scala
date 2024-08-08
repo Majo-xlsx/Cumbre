@@ -1,13 +1,12 @@
 package services
 
 import sttp.client3._
-import sttp.model.Uri
 import io.circe.parser._
 import io.circe.syntax._
 import io.circe.generic.auto._
 
 object GoogleSheetsService {
-  private val apiUrl = uri"https://script.google.com/macros/s/AKfycbwcS6pt8tkxYkTJE8DStTZHi67Uh5BuB0Zu_id2bbKVHvNzuhfCnFxBuEHLyBGaR4Otcw/exec" // URL de tu API web
+  private val apiUrl = uri"https://script.google.com/macros/s/AKfycbwcS6pt8tkxYkTJE8DStTZHi67Uh5BuB0Zu_id2bbKVHvNzuhfCnFxBuEHLyBGaR4Otcw/exec"
 
   case class Patient(id: String, fullName: String, idNumber: String, birthDate: String, gender: String, address: String, phone: String, email: String, registrationDate: String)
 
@@ -18,16 +17,17 @@ object GoogleSheetsService {
     decode[List[List[String]]](body).getOrElse(List.empty)
   }
 
-  def writeData(sheetName: String, range: String, values: List[List[String]]): Unit = {
+  def writeData(sheetName: String, values: List[List[String]]): Unit = {
     val backend = HttpURLConnectionBackend()
-    val body = new ValueRange().setValues(values.map(_.asJava).asJava)
+    val body = values.asJson.noSpaces // Convierte directamente la lista a JSON
     val response = basicRequest
       .post(apiUrl)
-      .body(body.asJson.noSpaces)
+      .body(body)
       .send(backend)
     
-    if (response.isFailure) {
-      println(s"Error escribiendo datos: ${response.statusCode} - ${response.body}")
+    response.body match {
+      case Right(_) => println("Datos escritos exitosamente")
+      case Left(error) => println(s"Error escribiendo datos: $error")
     }
   }
 
@@ -38,8 +38,9 @@ object GoogleSheetsService {
       .body(values.asJson.noSpaces)
       .send(backend)
 
-    if (response.isFailure) {
-      println(s"Error añadiendo datos: ${response.statusCode} - ${response.body}")
+    response.body match {
+      case Right(_) => println("Datos añadidos exitosamente")
+      case Left(error) => println(s"Error añadiendo datos: $error")
     }
   }
 
@@ -53,4 +54,3 @@ object GoogleSheetsService {
     appendData("Pacientes", List(newPatient.id, newPatient.fullName, newPatient.idNumber, newPatient.birthDate, newPatient.gender, newPatient.address, newPatient.phone, newPatient.email, newPatient.registrationDate))
   }
 }
-
