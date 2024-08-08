@@ -1,14 +1,13 @@
 package web
 
 import org.scalatra._
-import org.scalatra.Handler
 import services.GoogleSheetsService
 import io.circe.generic.auto._
 import io.circe.parser._
 
 case class Patient(id: String, fullName: String, idNumber: String, birthDate: String, gender: String, address: String, phone: String, email: String, registrationDate: String)
 
-class PatientController extends ScalatraServlet with Handler {
+class PatientController extends ScalatraServlet {
   get("/") {
     contentType = "text/html"
     scala.io.Source.fromResource("web/index.html").mkString

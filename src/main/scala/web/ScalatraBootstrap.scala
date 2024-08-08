@@ -1,7 +1,6 @@
 package web
 
 import org.scalatra.LifeCycle
-import org.scalatra.Handler
 import org.scalatra.ScalatraServlet
 import javax.servlet.ServletContext
 
@@ -12,6 +11,6 @@ object ScalatraBootstrap {
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext) {
-    context mount new PatientController with Handler
+    context mount classOf[PatientController], "/*"
   }
 }
