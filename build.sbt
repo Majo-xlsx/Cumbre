@@ -18,3 +18,5 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % "0.14.1",
   "javax.servlet" % "javax.servlet-api" % "4.0.1"
 )
+
+mainClass in Compile := Some("web.PatientController")
