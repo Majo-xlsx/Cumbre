@@ -11,6 +11,6 @@ object ScalatraBootstrap {
 
 class ScalatraBootstrap extends LifeCycle {
   override def init(context: ServletContext) {
-    context mount classOf[PatientController], "/*"
+    context mount classOf[PatientController]->"/*"
   }
 }
