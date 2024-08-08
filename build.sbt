@@ -1,4 +1,4 @@
-name := "ClinicManagement"
+name := "Cumbre"
 
 version := "0.1"
 
