@@ -43,14 +43,4 @@ object GoogleSheetsService {
       case Left(error) => println(s"Error añadiendo datos: $error")
     }
   }
-
-  def main(args: Array[String]): Unit = {
-    // Leer datos
-    val patients = getPatients()
-    println(s"Pacientes: $patients")
-
-    // Añadir un nuevo paciente
-    val newPatient = Patient("3", "Carlos Gómez", "12345679", "03/03/1990", "M", "Calle Ejemplo 123", "555-5557", "carlos.gomez@example.com", "03/03/2020")
-    appendData("Pacientes", List(newPatient.id, newPatient.fullName, newPatient.idNumber, newPatient.birthDate, newPatient.gender, newPatient.address, newPatient.phone, newPatient.email, newPatient.registrationDate))
-  }
 }
