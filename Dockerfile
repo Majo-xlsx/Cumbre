@@ -8,4 +8,4 @@ RUN apt-get update && apt-get install -y curl gnupg2 && \
 COPY . /app
 WORKDIR /app
 
-CMD ["sbt", "run"]
+CMD ["sbt", "jetty:start"]
