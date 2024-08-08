@@ -20,3 +20,4 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty" % "jetty-webapp" % "9.4.44.v20210927", 
   "org.eclipse.jetty" % "jetty-server" % "9.4.44.v20210927"  
 )
+mainClass in Compile := Some("web.ScalatraBootstrap")
