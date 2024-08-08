@@ -1,6 +1,7 @@
 package web
 
 import org.scalatra.LifeCycle
+import org.scalatra.Handler
 import org.scalatra.ScalatraServlet
 import javax.servlet.ServletContext
 
