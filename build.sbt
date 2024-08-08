@@ -17,9 +17,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % "0.14.1",
   "io.circe" %% "circe-parser" % "0.14.1",
   "javax.servlet" % "javax.servlet-api" % "4.0.1",
-  "org.eclipse.jetty" % "jetty-webapp" % "9.4.44.v20210927", // Agregado
-  "org.eclipse.jetty" % "jetty-server" % "9.4.44.v20210927"  // Agregado
+  "org.eclipse.jetty" % "jetty-webapp" % "9.4.44.v20210927", 
+  "org.eclipse.jetty" % "jetty-server" % "9.4.44.v20210927"  
 )
 
-// Configura el mainClass
-mainClass in Compile := Some("web.ScalatraBootstrap") // Cambiado a ScalatraBootstrap
+mainClass in Compile := Some("web.ScalatraBootstrap") 
