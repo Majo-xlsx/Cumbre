@@ -1,22 +1,30 @@
-name := "Cumbre"
+val ScalatraVersion = "3.1.0"
 
-version := "0.1"
+ThisBuild / scalaVersion := "3.3.3"
+ThisBuild / organization := "com.cumbre"
 
-scalaVersion := "2.13.8"
+lazy val hello = (project in file("."))
+  .settings(
+    name    := "Cumbre Website",
+    version := "0.1.0-SNAPSHOT",
+    libraryDependencies ++= Seq(
+      "com.google.api-client"          % "google-api-client"          % "1.33.0",
+      "com.google.oauth-client"        % "google-oauth-client"        % "1.31.5",
+      "com.softwaremill.sttp.client3" %% "circe"                      % "3.6.1",
+      "com.softwaremill.sttp.client3" %% "core"                       % "3.6.1",
+      "io.circe"                      %% "circe-core"                 % "0.14.1",
+      "io.circe"                      %% "circe-generic"              % "0.14.1",
+      "io.circe"                      %% "circe-parser"               % "0.14.1",
+      "org.scalatra"                  %% "scalatra-jakarta"           % ScalatraVersion,
+      "org.scalatra"                  %% "scalatra-scalatest-jakarta" % ScalatraVersion % "test",
+      "ch.qos.logback"                 % "logback-classic"            % "1.5.6"         % "runtime",
+      "org.eclipse.jetty.ee10"         % "jetty-ee10-webapp"          % "12.0.10"       % "container",
+      "jakarta.servlet"                % "jakarta.servlet-api"        % "6.0.0"         % "provided",
+    ),
+  )
 
-libraryDependencies ++= Seq(
-  "org.scalatra" %% "scalatra" % "2.7.0",
-  "org.postgresql" % "postgresql" % "42.2.20",
-  "com.zaxxer" % "HikariCP" % "3.4.5",
-  "org.scalatest" %% "scalatest" % "3.2.10" % Test,
-  "com.google.api-client" % "google-api-client" % "1.33.0",
-  "com.google.oauth-client" % "google-oauth-client" % "1.31.5",
-  "com.softwaremill.sttp.client3" %% "core" % "3.6.1",
-  "com.softwaremill.sttp.client3" %% "circe" % "3.6.1",
-  "io.circe" %% "circe-core" % "0.14.1",
-  "io.circe" %% "circe-generic" % "0.14.1",
-  "io.circe" %% "circe-parser" % "0.14.1",
-  "javax.servlet" % "javax.servlet-api" % "4.0.1"
-)
+enablePlugins(SbtTwirl)
+enablePlugins(JettyPlugin)
 
-mainClass in Compile := Some("web.ScalatraBootstrap")
+Jetty / containerLibs := Seq("org.eclipse.jetty.ee10" % "jetty-ee10-runner" % "12.0.10" intransitive ())
+Jetty / containerMain := "org.eclipse.jetty.ee10.runner.Runner"
