@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Pacientes</title>
-</head>
-<body>
+@()
+@layouts.html.default("Scalatra: a tiny, Sinatra-like web framework for Scala", "Welcome to Scalatra"){
     <h1>Agregar Paciente</h1>
     <form id="patientForm">
         <label for="id">ID:</label><br>
@@ -28,8 +22,9 @@
         <input type="text" id="registrationDate" name="registrationDate" required><br>
         <input type="submit" value="Agregar Paciente">
     </form>
+}
 
-    <script>
+    <!-- <script>
         document.getElementById('patientForm').onsubmit = async function (e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -52,4 +47,4 @@
         };
     </script>
 </body>
-</html>
+</html> -->
