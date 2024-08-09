@@ -8,6 +8,4 @@ RUN apt-get update && apt-get install -y curl gnupg2 && \
 COPY . /app
 WORKDIR /app
 
-EXPOSE 8080
-
 CMD ["sbt", "run"]
